@@ -47,5 +47,5 @@ async def change(ctx, filus: str, file: str, update_type: str, update: str):
     f.write(text)
     f.close()
 
-bot.run("код бота")
+bot.run("токен")
 
