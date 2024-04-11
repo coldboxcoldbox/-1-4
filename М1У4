@@ -1,0 +1,51 @@
+import discord
+from discord.ext import commands
+intents = discord.Intents.default()
+intents.members = True
+intents.message_content = True
+bot = commands.Bot(command_prefix='!', description="Очень интересный бот", intents=intents)
+
+
+async def on_ready(ctx):
+    print(f'Logged in as {bot.user} !')
+    await ctx.send("Бот в сети")
+
+@bot.command()
+async def guide(ctx):
+    await ctx.send("Вводитие команду audio/video/text/images, и пишите название файла, вместе с форматом")
+    await ctx.send("Команда change изменяет файл текстом, пишем в папку в которой находится файл (texts), вводим названия файла (elefant.txt), назначаем тип изменения файла (w), и пишем наше изменение") 
+    await ctx.send("Про типы изменения файлов, w - удаляет всё прошлое текстого файла, a - добавляет в конец изменение, wb измененяет НЕ текстовый файл")
+
+@bot.command()
+async def image(ctx, file: str):
+    with open(f'images/{file}', 'rb') as f:
+        images = discord.File(f)
+    await ctx.send(file=images)
+#видео
+@bot.command()
+async def video(ctx, file: str):
+    with open(f'video/{file}', 'rb') as f:
+        video = discord.File(f)
+    await ctx.send(file=video)
+#аудио
+@bot.command()
+async def audio(ctx, file: str):
+    with open(f'audio/{file}', 'rb') as f:
+        audio = discord.File(f)
+    await ctx.send(file=audio)
+#текстики
+@bot.command()
+async def text(ctx, file: str):
+    with open(f'texts/{file}', 'r') as f:
+        texts = discord.File(f)
+    await ctx.send(file=texts)
+#изменение
+@bot.command()
+async def change(ctx, filus: str, file: str, update_type: str, update: str):
+    f = open(f'{filus}/{file}', f'{update_type}', encoding='utf-8')
+    text = update
+    f.write(text)
+    f.close()
+
+bot.run("код бота")
+
